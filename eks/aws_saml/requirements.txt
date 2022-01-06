@@ -1,0 +1,9 @@
+bs4
+boto
+boto3
+botocore
+ConfigParser
+BeautifulSoup
+requests
+pathlib
+lxml
