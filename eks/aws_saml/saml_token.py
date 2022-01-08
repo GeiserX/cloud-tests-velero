@@ -213,7 +213,7 @@ token = conn.assume_role_with_saml(role_arn, principal_arn, assertion, duration_
 
 ### Write the AWS STS token into the AWS credential file
 
-filename = '/root/.aws/credentials'
+filename = '/home/drumsergio/.aws/credentials'
 
 # Read in the existing config file
 config = ConfigParser.RawConfigParser()
