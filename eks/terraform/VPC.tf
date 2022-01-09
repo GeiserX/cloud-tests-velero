@@ -6,16 +6,6 @@ resource "aws_vpc" "default" {
     Name = var.vpc_name
   }
 }
-resource "aws_vpc_peering_connection" "claranet" {
-  vpc_id        = aws_vpc.default.id
-  peer_owner_id = var.vpc_peering_claranet["peer_owner_id"]
-  peer_vpc_id   = var.vpc_peering_claranet["peer_vpc_id"]
-  peer_region   = var.vpc_peering_claranet["peer_region"]
-    tags = {
-      Name = var.vpc_peering_claranet["name"]
-    }
-}
-
 ### SUBNETS
 
 resource "aws_subnet" "public" {
@@ -38,98 +28,6 @@ resource "aws_subnet" "private" {
   tags = {
     Name = var.subnet_private
   }
-}
-
-
-### VPN
-resource "aws_vpn_gateway" "default" {
-  vpc_id = aws_vpc.default.id
-  tags = {
-    Name = var.vpn_gateway_name
-  }
-}
-
-resource "aws_customer_gateway" "default" {
-  for_each = var.vpn_customer_gateway
-  bgp_asn    = 65000
-  ip_address = each.value
-  type       = "ipsec.1"
-  tags = {
-    Name = each.key
-  }
-}
-
-resource "aws_vpn_connection" "default" {
-  vpn_gateway_id      = aws_vpn_gateway.default.id
-  customer_gateway_id = aws_customer_gateway.default["Inform"].id
-  type                = "ipsec.1"
-  tunnel1_phase1_dh_group_numbers = ["2","14","19","20","24"]
-  tunnel1_phase1_integrity_algorithms =  ["SHA1","SHA2-256","SHA2-384","SHA2-512"]
-  tunnel1_phase1_encryption_algorithms = ["AES256"]
-  tunnel1_phase2_integrity_algorithms =  ["SHA1","SHA2-256","SHA2-384","SHA2-512"]
-  tunnel1_phase2_encryption_algorithms = ["AES256"]
-  tunnel1_phase2_dh_group_numbers = ["2","14","19","20","24"]
-  tunnel1_ike_versions = ["ikev1","ikev2"]
-  tunnel1_dpd_timeout_action = "restart"
-  tunnel1_startup_action = "start"
-  
-  tunnel2_phase1_dh_group_numbers = ["2","14","19","20","24"]
-  tunnel2_phase1_integrity_algorithms =  ["SHA1","SHA2-256","SHA2-384","SHA2-512"]
-  tunnel2_phase1_encryption_algorithms = ["AES256"]
-  tunnel2_phase2_integrity_algorithms =  ["SHA1","SHA2-256","SHA2-384","SHA2-512"]
-  tunnel2_phase2_encryption_algorithms = ["AES256"]
-  tunnel2_phase2_dh_group_numbers = ["2","14","19","20","24"]
-  tunnel2_ike_versions = ["ikev1","ikev2"]
-  tunnel2_dpd_timeout_action = "restart"
-  tunnel2_startup_action = "start"
-
-  static_routes_only  = true
-  tags = {
-    Name = var.vpn_connection_name[0]
-  }
-}
-
-resource "aws_vpn_connection_route" "default" {
-  count = length(var.vpn_route_default)
-  destination_cidr_block = var.vpn_route_default[count.index]
-  vpn_connection_id      = aws_vpn_connection.default.id
-}
-
-### KLM VPN
-resource "aws_vpn_connection" "klm" {
-  vpn_gateway_id      = aws_vpn_gateway.default.id
-  customer_gateway_id = aws_customer_gateway.default["KLM"].id
-  type                = "ipsec.1"
-  tunnel1_phase1_dh_group_numbers = ["20"]
-  tunnel1_phase1_integrity_algorithms =  ["SHA2-384"]
-  tunnel1_phase1_encryption_algorithms = ["AES256"]
-  tunnel1_phase2_integrity_algorithms =  ["SHA2-384"]
-  tunnel1_phase2_encryption_algorithms = ["AES256"]
-  tunnel1_phase2_dh_group_numbers = ["20"]
-  tunnel1_ike_versions = ["ikev2"]
-  tunnel1_dpd_timeout_action = "restart"
-  tunnel1_startup_action = "start"
-  
-  tunnel2_phase1_dh_group_numbers = ["20"]
-  tunnel2_phase1_integrity_algorithms =  ["SHA2-384"]
-  tunnel2_phase1_encryption_algorithms = ["AES256"]
-  tunnel2_phase2_integrity_algorithms =  ["SHA2-384"]
-  tunnel2_phase2_encryption_algorithms = ["AES256"]
-  tunnel2_phase2_dh_group_numbers = ["20"]
-  tunnel2_ike_versions = ["ikev2"]
-  tunnel2_dpd_timeout_action = "restart"
-  tunnel2_startup_action = "start"
-
-  static_routes_only  = true
-  tags = {
-    Name = var.vpn_connection_name[1]
-  }
-}
-
-resource "aws_vpn_connection_route" "klm" {
-  count = length(var.vpn_route_klm)
-  destination_cidr_block = var.vpn_route_klm[count.index]
-  vpn_connection_id      = aws_vpn_connection.klm.id
 }
 
 ### For NAT-GW
@@ -157,11 +55,7 @@ resource "aws_internet_gateway" "default" {
 ### ROUTE TABLES
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
-  
-  route {
-    cidr_block = "10.160.160.0/24"
-    vpc_peering_connection_id = aws_vpc_peering_connection.claranet.id
-  }
+
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.default.id
@@ -169,16 +63,12 @@ resource "aws_route_table" "public" {
   tags = {
     Name = "Public"
   }
-  propagating_vgws = [aws_vpn_gateway.default.id]
 }
 
 resource "aws_route_table" "private" {
   for_each = aws_nat_gateway.default
   vpc_id = aws_vpc.default.id
-  route {
-    cidr_block = "10.160.160.0/24"
-    vpc_peering_connection_id = aws_vpc_peering_connection.claranet.id
-  }
+
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = each.value.id
@@ -186,7 +76,7 @@ resource "aws_route_table" "private" {
   tags = {
     Name = "Private"
   }
-  propagating_vgws = [aws_vpn_gateway.default.id]
+
 }
 
 resource "aws_route_table_association" "public" {
@@ -200,7 +90,6 @@ resource "aws_route_table_association" "private" {
   subnet_id      = each.value.id
   route_table_id = aws_route_table.private[each.value.availability_zone].id
 }
-
 
 
 resource "aws_vpc_endpoint" "s3" {
