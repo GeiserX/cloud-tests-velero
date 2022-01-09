@@ -18,6 +18,6 @@ nodeGroups:
     volumeSize: 20
     iam: 
       attachPolicyARNs:
-        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:+policy/AmazonEKSWorkerNodePolicy
     ssh:
       allow: true # will use ~/.ssh/id_rsa.pub as the default ssh key

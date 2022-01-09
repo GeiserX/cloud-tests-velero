@@ -4,16 +4,16 @@
 resource "aws_eks_cluster" "default" {
 
   version = "1.21"
-  name = "inform-klm-dev"
-  role_arn = aws_iam_role.eks-cluster.arn
+  name = "sergio-test"
+  role_arn = aws_iam_role.eks-cluster-role.arn
 
   enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   vpc_config {
     endpoint_public_access = true
     endpoint_private_access = true
-    subnet_ids = [aws_subnet.private["eu-west-1a"].id, aws_subnet.private["eu-west-1b"].id]
-    public_access_cidrs = ["212.82.224.202/32", "212.82.224.205/32"]
+    subnet_ids = [aws_subnet.private["eu-west-3a"].id, aws_subnet.private["eu-west-3b"].id]
+    public_access_cidrs = ["0.0.0.0/0", "212.82.224.202/32", "212.82.224.205/32"]
   }
 
   kubernetes_network_config {
@@ -44,19 +44,19 @@ output "kubeconfig-certificate-authority-data" {
 resource "aws_eks_node_group" "private" {
 
   cluster_name = aws_eks_cluster.default.name
-  node_role_arn = aws_iam_role.eks-worker.arn
-  subnet_ids = [aws_subnet.private["eu-west-1a"].id, aws_subnet.private["eu-west-1b"].id]
+  node_role_arn = aws_iam_role.eks-worker-role.arn
+  subnet_ids = [aws_subnet.private["eu-west-3a"].id]
 
-  node_group_name = "inform-klm-dev-private"
+  node_group_name = "sergio-private"
   #instance_types = ["t3.medium"]
-  instance_types = ["r5.xlarge"]
-  capacity_type = "ON_DEMAND"
+  instance_types = ["c6i.large"]
+  capacity_type = "SPOT"
   disk_size = 20
 
   scaling_config {
-    desired_size = 2
-    max_size = 2
-    min_size = 2
+    desired_size = 1
+    max_size = 1
+    min_size = 1
   }
 
   version = "1.21"
@@ -74,19 +74,19 @@ resource "aws_eks_node_group" "private" {
 ### EKS Identity Provider ###
 
 # EKS cluster OpenID identity provider association
-resource "aws_eks_identity_provider_config" "inform-klm-dev" {
+resource "aws_eks_identity_provider_config" "sergio-test" {
   cluster_name = aws_eks_cluster.default.name
 
   oidc {
     client_id = "sts.amazonaws.com"
-    identity_provider_config_name = "inform-klm-dev"
+    identity_provider_config_name = "sergio-test"
     issuer_url = aws_eks_cluster.default.identity.0.oidc.0.issuer
   }
 }
 
 # OpenID Provider
-resource "aws_iam_openid_connect_provider" "inform-klm-dev" {
+resource "aws_iam_openid_connect_provider" "sergio-test" {
   client_id_list = ["sts.amazonaws.com"]
-  thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da2b0ab7280"]
+  thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da2b0ab7280"] #CAB073498D7558FEC3B2C414C006ACBA30805431
   url = aws_eks_cluster.default.identity.0.oidc.0.issuer
 }
