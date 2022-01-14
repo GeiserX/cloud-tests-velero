@@ -1,0 +1,20 @@
+context: gke_claranet-playground_europe-west1-b_sergio-test
+
+repositories:
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+
+releases:
+  - name: velero
+    namespace: velero
+    chart: vmware-tanzu/velero
+    version: 2.27.1
+    labels:
+      group: backup
+      app: velero
+      release: velero
+    values:
+      - velero.yaml
+    set:
+    - name: credentials.secretContents.cloud
+      file: ../../secrets/terraform/service-accounts/velero-backups@claranet-playground.iam.gserviceaccount.com-secret.json
