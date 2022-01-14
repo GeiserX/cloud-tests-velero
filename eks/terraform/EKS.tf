@@ -49,14 +49,14 @@ resource "aws_eks_node_group" "private" {
 
   node_group_name = "sergio-private"
   #instance_types = ["t3.medium"]
-  instance_types = ["c6i.large"]
+  instance_types = ["c6i.large"] # 3rd generation Intel Xeon Scalable proc, 2vcpu 4gb ram.
   capacity_type = "SPOT"
   disk_size = 20
 
-  scaling_config {
-    desired_size = 1
+  scaling_config { # PUT TO 1
+    desired_size = 0
     max_size = 1
-    min_size = 1
+    min_size = 0
   }
 
   version = "1.21"
