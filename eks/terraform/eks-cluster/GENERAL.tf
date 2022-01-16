@@ -3,7 +3,7 @@ provider "aws" {
 }
 ### Provider for CDN Certificates
 provider "aws" {
-  alias = "ireland"
+  alias = "paris"
   region = "eu-west-3"
 }
 
