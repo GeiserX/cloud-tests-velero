@@ -1,40 +1,3 @@
-resource "aws_iam_account_password_policy" "strict" {
-  minimum_password_length        = 12
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_uppercase_characters   = true
-  require_symbols                = true
-  allow_users_to_change_password = true
-  max_password_age               = 60
-  password_reuse_prevention      = 5
-}
-
-#resource "aws_iam_user" "sergio" {
-#  name = "Inform"
-#}
-#resource "aws_iam_access_key" "sergio" {
-#  user = aws_iam_user.sergio.name
-#}
-#
-#resource "aws_iam_user_policy_attachment" "CloudwatchReadOnly" {
-#  user = aws_iam_user.sergio.name
-#  policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
-#}
-#
-#resource "aws_iam_user_policy_attachment" "EC2ReadOnly" {
-#  user = aws_iam_user.sergio.name
-#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
-#}
-/*
-output "nagios-access-key" {
-  alue = aws_iam_access_key.sergio.id
-}
-
-output "nagios-secret-key" {
-  value = nonsensitive(aws_iam_access_key.sergio.secret)
-}
-*/
-
 ### EKS ###
 # cluster control plane
 resource "aws_iam_role" "eks-cluster-role" {
@@ -104,7 +67,6 @@ resource "aws_iam_role_policy_attachment" "eks-worker_cloudwatchlogs" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   role = aws_iam_role.eks-worker-role.name
 }
-
 
 # ------------- Velero ------------- #
 resource "aws_iam_policy" "velero-policy" {

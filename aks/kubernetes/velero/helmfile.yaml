@@ -1,4 +1,4 @@
-context:  arn:aws:eks:eu-west-3:384894877891:cluster/sergio-test
+context:  XXXX
 
 repositories:
   - name: vmware-tanzu

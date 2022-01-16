@@ -23,7 +23,7 @@ resource "aws_eks_cluster" "default" {
   depends_on = [
     #aws_iam_role_policy_attachment.eks-cluster,
     #aws_iam_role_policy_attachment.eks-cluster_vpc,
-    aws_cloudwatch_log_group.eks-cluster
+    #aws_cloudwatch_log_group.eks-cluster
   ]
 
 }
@@ -47,14 +47,13 @@ resource "aws_eks_node_group" "private" {
   node_role_arn = aws_iam_role.eks-worker-role.arn
   subnet_ids = [aws_subnet.private["eu-west-3a"].id]
 
-  node_group_name = "sergio-private"
-  #instance_types = ["t3.medium"]
+  node_group_name = "sergio-private-group"
   instance_types = ["c6i.large"] # 3rd generation Intel Xeon Scalable proc, 2vcpu 4gb ram.
-  capacity_type = "SPOT"
+  capacity_type = "SPOT"#"SPOT"
   disk_size = 20
 
   scaling_config { # PUT TO 1
-    desired_size = 0
+    desired_size = 1
     max_size = 1
     min_size = 0
   }

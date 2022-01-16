@@ -12,8 +12,8 @@ resources:
     memory: 512Mi
 
 initContainers:
-  - name: velero-plugin-for-aws
-    image: velero/velero-plugin-for-aws:v1.3.0
+  - name: velero-plugin-for-microsoft-azure
+    image: velero/velero-plugin-for-microsoft-azure:v1.3.1
     imagePullPolicy: IfNotPresent
     volumeMounts:
       - mountPath: /target
@@ -32,23 +32,25 @@ kubectl:
 upgradeCRDs: true
 
 configuration:
-  provider: aws
+  provider: azure
   backupStorageLocation:
-    name: aws
-    bucket: "sergio-tests-velero-backups"
+    name: azure
+    bucket: "velero" # CHANGE?
     config:
-      region: eu-west-3
+      resourceGroup = XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      storageAccount= XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   volumeSnapshotLocation:
-    name: aws
+    name: azure
     config:
-      region: eu-west-3
+      resourceGroup = XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      storageAccount= XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 serviceAccount:
   server:
     create: true
     name: velero
-    annotations: 
-      eks.amazonaws.com/role-arn: "arn:aws:iam::384894877891:role/velero-role"
+#    annotations:
+#      eks.amazonaws.com/role-arn: "arn:aws:iam::384894877891:role/velero-role"
 
 credentials:
   useSecret: true
@@ -62,7 +64,7 @@ schedules:
   my-schedule:
     schedule: "30 1 1 1 *"
     template:
-      storageLocation: aws
+      storageLocation: azure
       ttl: "9999h0m0s"
       includedNamespaces:
        - workload
