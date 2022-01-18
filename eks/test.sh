@@ -1,5 +1,7 @@
 # Destroy cluster
+#k delets svc -n workload wordpress
 #terraform -chdir=terraform/eks-cluster/ destroy -auto-approve
+# delete cluster:
 #kubectl config unset sergio-test
 
 # Create cluster, cloud resources and velero dependencies
