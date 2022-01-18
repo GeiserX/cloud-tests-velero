@@ -21,7 +21,7 @@ resource "aws_eks_cluster" "default" {
   }
 
   depends_on = [
-    #aws_iam_role_policy_attachment.eks-cluster,
+    aws_iam_role_policy_attachment.eks-cluster,
     #aws_iam_role_policy_attachment.eks-cluster_vpc,
     #aws_cloudwatch_log_group.eks-cluster
   ]
