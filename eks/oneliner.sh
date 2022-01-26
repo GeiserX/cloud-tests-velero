@@ -1,5 +1,5 @@
 TIMEFORMAT=%R;
-for i in {1..2}
+for i in {1..1}
 do
   kubectl delete svc -n workload wordpress
   terraform -chdir=terraform/eks-cluster/ destroy -auto-approve
