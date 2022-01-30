@@ -1,14 +1,13 @@
 #!/bin/bash
+
 kubectl delete -k ./ >/dev/null
 
-echo "Deleted resources" >/dev/null
+until velero restore create $RANDOM-my-backup-$RANDOM --from-backup velero-wm-daily-20220115161706;
+do
+  sleep 1;
+done;
 
-velero restore create $RANDOM-my-backup-$RANDOM --from-backup test-wp >/dev/null
-
-echo "Velero backup restored" >/dev/null
-#sleep 10 >/dev/null # No problem of waiting 10s... the kubernetes deployment still continues underneath
-
-until kubectl wait deploy/wordpress --timeout=300s --for=condition=available; >/dev/null
+until kubectl -n workload wait deploy/wordpress --timeout=300s --for=condition=available;
 do
   sleep 1;
 done;
