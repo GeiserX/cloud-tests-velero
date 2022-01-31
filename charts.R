@@ -46,8 +46,8 @@ aws_cluster$no_oidc <- aws_cluster$time_elapsed - aws_cluster$time_elapsed_oidc
 aws_cluster_no_oidc <- aws_cluster %>% select(c(-time_elapsed, -time_elapsed_oidc))
 colnames(aws_cluster_no_oidc) <- c("group", "time_elapsed")
 cluster_combined2 <- rbind(aws_cluster_no_oidc, gcp_cluster)
-mean_aws <- mean(aws_cluster$time_elapsed)
-median_aws <- median(aws_cluster$time_elapsed)
+mean_aws <- mean(aws_cluster_no_oidc$time_elapsed)
+median_aws <- median(aws_cluster_no_oidc$time_elapsed)
 mean_gcp <- mean(gcp_cluster$time_elapsed)
 median_gcp <- median(gcp_cluster$time_elapsed)
 mean_time_difference <- mean_gcp - mean_aws
