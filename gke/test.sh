@@ -5,11 +5,11 @@
 # Create cluster, cloud resources and velero dependencies
 terraform -chdir=terraform/gke-cluster/ apply -auto-approve # We could add variables here to select where to deploy the cluster on demand
 gcloud container clusters get-credentials sergio-test --zone europe-west1-b --project claranet-playground
-terraform -chdir=terraform/platform-services/ apply -auto-approve
+#terraform -chdir=terraform/platform-services/ apply -auto-approve
 
 # Install velero and recover backup
 helmfile -f kubernetes/velero/helmfile.yaml apply
-until velero restore create my-backup --from-backup velero-wm-daily-20220114211018
+until velero restore create my-backup --from-backup test
 do
   sleep 1;
 done;

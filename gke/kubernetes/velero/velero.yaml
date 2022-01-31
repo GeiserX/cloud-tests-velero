@@ -49,9 +49,9 @@ schedules:
   my-schedule:
     schedule: "30 1 1 1 *"
     template:
-      storageLocation: aws
+      storageLocation: gcp
       ttl: "9999h0m0s"
       includedNamespaces:
-       - wordpress-mysql
+       - workload
       includedResources:
       - '*'

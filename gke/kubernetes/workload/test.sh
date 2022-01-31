@@ -1,8 +1,8 @@
 #!/bin/bash
 
-kubectl delete -k ./ >/dev/null
+kubectl delete -k ./
 
-until velero restore create $RANDOM-my-backup-$RANDOM --from-backup velero-wm-daily-20220115161706;
+until velero restore create $RANDOM-my-backup-$RANDOM --from-backup test;
 do
   sleep 1;
 done;
