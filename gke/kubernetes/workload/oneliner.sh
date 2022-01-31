@@ -1,7 +1,7 @@
 TIMEFORMAT=%R;
-for i in {1..20}
+for i in {1..50}
 do
   sleep 5
-  time ./test.sh
+  time timeout 300s ./test.sh
   sleep 5
 done
