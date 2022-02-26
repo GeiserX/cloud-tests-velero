@@ -1,5 +1,5 @@
 TIMEFORMAT=%R;
-for i in {1..50}
+for i in {1..7}
 do
   terraform -chdir=terraform/gke-cluster/ destroy -auto-approve
   kubectl config unset gke_claranet-playground_europe-west1-b_sergio-test
