@@ -37,9 +37,10 @@ aws_cluster$group <- "aws"
 aws_cluster_main <- aws_cluster %>% select(-time_elapsed_oidc)
 gcp_cluster$group <- "gcp"
 cluster_combined <- rbind(aws_cluster_main, gcp_cluster)
-ggplot(cluster_combined, aes(x=time_elapsed, fill=group)) +
+cluster <- ggplot(cluster_combined, aes(x=time_elapsed, fill=group)) +
   geom_density() +
   ggtitle("Time elapsed for DR in scenario 2 (with OIDC provider)") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
+ggsave("cluster.png", plot=cluster)
 
 # Cluster without OIDC
 aws_cluster$no_oidc <- aws_cluster$time_elapsed - aws_cluster$time_elapsed_oidc
