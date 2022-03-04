@@ -7,7 +7,7 @@ library("dplyr")
 gcp_cluster <- read.table("../gke/timings.txt", header = F, sep = " ", colClasses = "numeric")
 colnames(gcp_cluster) <- "time_elapsed"
 ggplot(gcp_cluster, aes(x=time_elapsed)) +
-  geom_histogram(bins=6)
+  geom_histogram(bins=7)
 
 gcp_workload <- read.table("../gke/kubernetes/workload/timings.txt", header = F, sep = " ", colClasses = "numeric")
 colnames(gcp_workload) <- "time_elapsed"

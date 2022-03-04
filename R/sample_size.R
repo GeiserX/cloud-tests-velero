@@ -18,3 +18,7 @@ sd_aws_cluster_no_oidc <- sd(aws_cluster$time_elapsed_no_oidc)
 sd_aws_workload <- sd(unlist(aws_workload))
 
 sample_size_95_gcp_cluster <-  (1.96)^2 * sd_gcp_cluster * (1 - sd_gcp_cluster) / (0.5)^2
+sample_size_95_gcp_workload <-  (1.96)^2 * sd_gcp_workload* (1 - sd_gcp_workload) / (0.5)^2
+sample_size_95_aws_cluster <-  (1.96)^2 * sd_aws_cluster* (1 - sd_aws_cluster) / (0.5)^2
+sample_size_95_sd_aws_cluster_no_oidc <-  (1.96)^2 * sd_sd_aws_cluster_no_oidc * (1 - sd_aws_cluster_no_oidc) / (0.5)^2
+sample_size_95_aws_workload <-  (1.96)^2 * sd_aws_workload* (1 - sd_aws_workload) / (0.5)^2
