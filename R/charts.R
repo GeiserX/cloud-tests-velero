@@ -25,7 +25,7 @@ ggplot(aws_cluster, aes(x=time_elapsed)) +
   geom_histogram(bins=10)
 ggplot(aws_cluster, aes(x=time_elapsed_oidc)) +
   geom_histogram(bins=10)
-write_xlsx(gcp_cluster,"aws_cluster.xlsx")
+write_xlsx(aws_cluster,"aws_cluster.xlsx")
 
 aws_workload <- read.table("../eks/kubernetes/workload/timings.txt", header = F, sep = " ", colClasses = "numeric")
 colnames(aws_workload) <- "time_elapsed"
@@ -33,7 +33,7 @@ ggplot(aws_workload, aes(x=time_elapsed)) +
   geom_histogram(bins = 20, color="darkblue", fill="lightblue") +
   #geom_vline(aes(xintercept=mean(time_elapsed), color="blue", linetype="dashed")) +
   geom_density(alpha=.92, fill="#FF6666")
-write_xlsx(gcp_cluster,"aws_workload.xlsx")
+write_xlsx(aws_workload,"aws_workload.xlsx")
 
 ### COMBINED ###
 
