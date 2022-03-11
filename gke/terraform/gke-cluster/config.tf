@@ -1,20 +1,9 @@
-#===========================
-# Config for the gke cluster part
-#===========================
-
-#==================
-# Provider config
-#==================
-
 provider "google" {
   project = var.gcp_project_id
   region  = var.gcp_default_region
   zone    = var.gcp_default_zone
 }
 
-#====================
-# Project variables 
-#====================
 variable "gcp_project_id" {
   default = "claranet-playground"
 }
@@ -27,9 +16,6 @@ variable "gcp_default_zone" {
   default = "europe-west1-b"
 }
 
-# GKE Settings
-# --------------------------
-
 locals {
   vpc = {
     node_subnet_ip_range    = "10.162.0.0/22"
@@ -37,13 +23,9 @@ locals {
     service_subnet_ip_range = "10.143.0.0/23"
     pod_subnet_name         = "gke-pod-alias-ips"
   }
-
   node_nat_ports_per_vm   = 1024
   pod_nat_ports_per_vm    = 64
-
-
   fw_mgmt_sources         = ["0.0.0.0/0"]
-
   cluster = {
       name                   = "sergio-test"
       min_master_version     = "1.21.6-gke.1500"
@@ -60,7 +42,6 @@ locals {
       "https://www.googleapis.com/auth/monitoring",
     ]
   }
-
   preemtible = {
     node_version       = "1.21.5-gke.1302"
     initial_node_count = 1

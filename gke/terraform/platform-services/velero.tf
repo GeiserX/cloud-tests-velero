@@ -1,9 +1,6 @@
-# ========= Velero Backup
-
 # ======================
 # Create custom role for disk/snapshots
 # =====================
-
 resource "google_project_iam_custom_role" "velero-role" {
   role_id     = "velero"
   title       = "Velero Role"

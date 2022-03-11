@@ -52,15 +52,15 @@ aws_cluster$no_oidc <- aws_cluster$time_elapsed - aws_cluster$time_elapsed_oidc
 aws_cluster_no_oidc <- aws_cluster %>% select(c(-time_elapsed, -time_elapsed_oidc))
 colnames(aws_cluster_no_oidc) <- c("group", "time_elapsed")
 cluster_combined2 <- rbind(aws_cluster_no_oidc, gcp_cluster)
-mean_aws <- mean(aws_cluster_no_oidc$time_elapsed)
-median_aws <- median(aws_cluster_no_oidc$time_elapsed)
-mean_gcp <- mean(gcp_cluster$time_elapsed)
-median_gcp <- median(gcp_cluster$time_elapsed)
-mean_time_difference <- mean_gcp - mean_aws
+# mean_aws <- mean(aws_cluster_no_oidc$time_elapsed)
+# median_aws <- median(aws_cluster_no_oidc$time_elapsed)
+# mean_gcp <- mean(gcp_cluster$time_elapsed)
+# median_gcp <- median(gcp_cluster$time_elapsed)
+# mean_time_difference <- mean_gcp - mean_aws
 cluster_no_oidc <- ggplot(cluster_combined2, aes(x=time_elapsed, fill=group)) +
   geom_density(alpha=.5) +
-  geom_vline(aes(xintercept = mean_aws), col='red', size=1) +
-  geom_vline(aes(xintercept = mean_gcp), col='blue', size=1) +
+  # geom_vline(aes(xintercept = median_aws), col='red', size=1) +
+  # geom_vline(aes(xintercept = median_gcp), col='blue', size=1) +
   ggtitle("Time elapsed for DR in scenario 2 (without OIDC provider)") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
 ggsave("cluster_no_oidc.png", plot=cluster_no_oidc)
 
@@ -68,14 +68,14 @@ ggsave("cluster_no_oidc.png", plot=cluster_no_oidc)
 aws_workload$group <- "aws"
 gcp_workload$group <- "gcp"
 workload_combine <- rbind(aws_workload, gcp_workload)
-mean_aws <- mean(aws_workload$time_elapsed)
-median_aws <- median(aws_workload$time_elapsed)
-mean_gcp <- mean(gcp_workload$time_elapsed)
-median_gcp <- median(gcp_workload$time_elapsed)
-mean_time_difference <- mean_gcp - mean_aws
+# mean_aws <- mean(aws_workload$time_elapsed)
+# median_aws <- median(aws_workload$time_elapsed)
+# mean_gcp <- mean(gcp_workload$time_elapsed)
+# median_gcp <- median(gcp_workload$time_elapsed)
+# mean_time_difference <- mean_gcp - mean_aws
 workload <- ggplot(workload_combined, aes(x=time_elapsed, fill=group)) +
   geom_density(alpha=.5) +
-  geom_vline(aes(xintercept = mean_aws), col='red', size=1) +
-  geom_vline(aes(xintercept = mean_gcp), col='blue', size=1) +
+  # geom_vline(aes(xintercept = median_aws), col='red', size=1) +
+  # geom_vline(aes(xintercept = median_gcp), col='blue', size=1) +
   ggtitle("Time elapsed for recovery in scenario 1") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
 ggsave("workload.png", plot=workload)
