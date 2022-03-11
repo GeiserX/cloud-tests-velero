@@ -19,9 +19,6 @@ initContainers:
       - mountPath: /target
         name: plugins
 
-#podSecurityContext:
-#  fsGroup: 1337
-
 metrics:
   enabled: false
 
@@ -30,7 +27,6 @@ kubectl:
     repository: docker.io/bitnami/kubectl
 
 upgradeCRDs: true
-
 configuration:
   provider: gcp
   backupStorageLocation:
@@ -42,16 +38,15 @@ credentials:
 
 backupsEnabled: true
 snapshotsEnabled: true
-
 deployRestic: false
 
-schedules:
-  my-schedule:
-    schedule: "30 1 1 1 *"
-    template:
-      storageLocation: gcp
-      ttl: "9999h0m0s"
-      includedNamespaces:
-       - workload
-      includedResources:
-      - '*'
+# schedules:
+#   my-schedule:
+#     schedule: "30 1 1 1 *"
+#     template:
+#       storageLocation: gcp
+#       ttl: "9999h0m0s"
+#       includedNamespaces:
+#        - workload
+#       includedResources:
+#       - '*'
