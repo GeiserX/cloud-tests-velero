@@ -28,7 +28,7 @@ locals {
   fw_mgmt_sources         = ["0.0.0.0/0"]
   cluster = {
       name                   = "sergio-test"
-      min_master_version     = "1.21.6-gke.1500"
+      min_master_version     = "1.21.6-gke.1503"
       master_ipv4_cidr_block = "172.16.0.32/28"
       daily_maintenance      = "03:00"
       tags                   = ["gke-test"]
