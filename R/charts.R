@@ -44,7 +44,7 @@ gcp_cluster$group <- "gcp"
 cluster_combined <- rbind(aws_cluster_main, gcp_cluster)
 cluster <- ggplot(cluster_combined, aes(x=time_elapsed, fill=group)) +
   geom_density() +
-  ggtitle("Time elapsed for DR in scenario 2 (with OIDC)") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
+  ggtitle("Time elapsed for DR in scenario 2 with OIDC") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
 ggsave("cluster.png", plot=cluster)
 
 # Cluster without OIDC
@@ -61,7 +61,7 @@ cluster_no_oidc <- ggplot(cluster_combined2, aes(x=time_elapsed, fill=group)) +
   geom_density(alpha=.5) +
   # geom_vline(aes(xintercept = median_aws), col='red', size=1) +
   # geom_vline(aes(xintercept = median_gcp), col='blue', size=1) +
-  ggtitle("Time elapsed for DR in scenario 2 (without OIDC)") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
+  ggtitle("Time elapsed for DR in scenario 2 without OIDC") + labs(fill = "Vendor", x="Time elapsed (s)", y="Density")
 ggsave("cluster_no_oidc.png", plot=cluster_no_oidc)
 
 # Workload
