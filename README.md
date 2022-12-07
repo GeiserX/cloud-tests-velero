@@ -13,4 +13,3 @@ Final project presented as a Dissertation in Edinburgh Napier University as a pa
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
