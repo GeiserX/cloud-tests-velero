@@ -3,7 +3,7 @@
 <h1 align="center">Velero Cloud Tests</h1>
 
 <p align="center">
-  <a href="LICENSE.md"><img src="https://img.shields.io/github/license/GeiserX/cloud-tests-velero" alt="License"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/GeiserX/cloud-tests-velero" alt="License"/></a>
 </p>
 
 <p align="center"><strong>Disaster Recovery analysis for managed Kubernetes clusters</strong></p>
@@ -20,4 +20,4 @@ Final project presented as a Dissertation in Edinburgh Napier University as a pa
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later). See [LICENSE](LICENSE).
