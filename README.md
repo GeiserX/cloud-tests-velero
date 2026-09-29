@@ -10,14 +10,20 @@
 
 ---
 
-Disaster Recovery is nowadays an increasingly important topic of research, as society is depending more and more on technology and communications for every task or process, be it related to business or government. This applies to systems, data, and its links. In recent years, there has been a shift in production systems towards the usage of Kubernetes, which is a piece of software that orchestrates computing resources in a different paradigm. This tool improves, but not solves completely, several aspects of a disaster recovery process, as it has built-in replication and scaling of the applications running within. It also allows easy deployment of load balancers and because of its design, it facilitates the migration process of workloads. However, the literature suggests that disaster recovery addressing specifically Kubernetes is not well studied, while progressively more companies are making heavy use of it. In this dissertation, Disaster Recovery procedures are investigated, leveraging Kubernetes in the cloud. Mainly, the Recovery Time Objective (RTO) and partially, the Recovery Point Objective (RPO) are studied in the context of two cloud providers in this dissertation. These providers include Amazon Web Services and Google Cloud Platform. Two main disasters that a cloud user could suffer are characterised: The first, a software update issue; and the second, a cloud zonal outage. For the given scenarios, it has been found that AWS has a mean noticeable shorter RTO in the first scenario compared to GCP. However, in the second scenario, the RTO was surprisingly longer than GCP, mainly because an OpenID Cloud Identity Provider was set in place in AWS.
+Velero Cloud Tests holds the Terraform, Velero and workload manifests and the timing scripts used to measure disaster recovery times (the RTO, and partly the RPO) on managed Kubernetes in AWS and GCP for two scenarios, a broken software update and a zonal outage, plus the R analysis and the dissertation itself. After a broken update AWS recovered faster than GCP; after a zonal outage GCP was faster, mainly because of the OpenID identity provider set up on AWS. It was the final project of an MSc in Data Engineering at Edinburgh Napier University.
 
-Final project presented as a Dissertation in Edinburgh Napier University as a part of my MSc in Data Engineering.
+## Quick start
 
-## Author
+The scripts are the record of the dissertation's runs, with its region, cluster, bucket and backup names written in, so adapt those first. On AWS, from `eks/` (`gke/` holds the same for GCP):
 
-* **GeiserX** - *Creator* - [GeiserX](https://github.com/GeiserX)
+```bash
+./test.sh                                 # create the EKS cluster, install Velero, restore the WordPress workload from a backup
+cd kubernetes/workload && ./oneliner.sh   # broken-update scenario: delete and restore the workload, 30 timed runs
+cd ../.. && ./oneliner.sh                 # zonal-outage scenario: destroy and rebuild the cluster, 4 timed runs
+```
+
+Needs `terraform`, the `aws` CLI, `helmfile`, `kubectl`, `velero`, and a Velero backup already in the bucket that `terraform/platform-services` creates. The measured times are in the `timings.txt` files, the charts and tests in `R/`, and the write-up in [`Dissertation.pdf`](Dissertation.pdf).
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later). See [LICENSE](LICENSE).
+[GPL-3.0-or-later](LICENSE)
