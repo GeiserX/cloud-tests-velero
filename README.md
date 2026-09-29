@@ -22,7 +22,7 @@ cd kubernetes/workload && ./oneliner.sh   # broken-update scenario: delete and r
 cd ../.. && ./oneliner.sh                 # zonal-outage scenario: destroy and rebuild the cluster, 4 timed runs
 ```
 
-Needs `terraform`, the `aws` CLI, `helmfile`, `kubectl`, `velero`, and a Velero backup already in the bucket that `terraform/platform-services` creates. The measured times are in the `timings.txt` files, the charts and tests in `R/`, and the write-up in [`Dissertation.pdf`](Dissertation.pdf).
+Needs `terraform`, the `aws` CLI, `helm` with the `helm-diff` plugin, `helmfile`, `kubectl`, `velero`, and a Velero backup already in the bucket that `terraform/platform-services` creates. The measured times are in the `timings.txt` files, the charts and tests in `R/`, and the write-up in [`Dissertation.pdf`](Dissertation.pdf).
 
 ## License
 
